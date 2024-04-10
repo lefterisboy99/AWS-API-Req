@@ -1,0 +1,24 @@
+import json
+import urllib3
+import boto3
+from boto3 import client as boto3_client
+
+lamba_client=boto3_client('lambda')
+def lambda_handler(event, context):
+    # TODO implement
+    http = urllib3.PoolManager()
+    print(event)
+
+    resp = http.request(event["Method"], event["URL"])
+    
+    
+    
+    msg = {
+        "ID":event["ID"],
+        "method":event["Method"],
+        "URL":event["URL"],
+        "Expected_Result":event["Expected_Result"],
+        "data":resp.data.decode('utf-8')
+    }
+    
+    invoke_response=lamba_client.invoke(FunctionName="lab1ask2_6",InvocationType='Event',Payload=json.dumps(msg))

@@ -1,0 +1,11 @@
+import json
+import boto3
+import time
+from boto3 import client as boto3_client
+
+def lambda_handler(event, context):
+    print("event")
+    print(event)
+    sqs = boto3.client('sqs')
+    queue = sqs.send_message(QueueUrl='https://sqs.us-east-1.amazonaws.com/509253501177/ask2lab1queue',MessageBody = json.dumps(event))
+    

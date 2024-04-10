@@ -1,0 +1,11 @@
+import json
+import uuid
+
+def lambda_handler(event, context):
+    # TODO implement
+    return {
+        "ID" : uuid.uuid4().hex,
+        "method":event["method"],
+        "URL":event["URL"],
+        "Expected_Result":event["Expected_Result"]
+    }

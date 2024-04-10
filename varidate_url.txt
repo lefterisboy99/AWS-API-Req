@@ -1,0 +1,27 @@
+import json
+import urllib3
+
+def lambda_handler(event, context):
+    # TODO implement
+    http = urllib3.PoolManager()
+    try:
+        resp = http.request(event["method"], event["URL"])
+        
+    except Exception :
+        return {
+            "method":event["method"],
+            "URL":event["URL"],
+            "Expected_Result":event["Expected_Result"],
+            "data":0,
+            "result":400
+        }
+    
+    
+    
+    return {
+        "method":event["method"],
+        "URL":event["URL"],
+        "Expected_Result":event["Expected_Result"],
+        "data":resp.data,
+        "result":resp.status
+    }

@@ -1,0 +1,17 @@
+import json
+import boto3
+from boto3 import client as boto3_client
+
+lamba_client=boto3_client('lambda')
+def lambda_handler(event, context):
+    print(event)
+    
+    method = event["method"]
+    URL = event["URL"]
+    Expected_Result = event["Expected_Result"]
+    msg={"action":"POST","method":method,"URL":URL,"Expected_Result":Expected_Result}
+    response = boto3.client('stepfunctions').start_sync_execution(
+        stateMachineArn='arn:aws:states:us-east-1:509253501177:stateMachine:ask2lab1_state_machine',
+        name='ask2lab1_state_machine',
+        input= json.dumps(msg)
+    )

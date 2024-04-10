@@ -1,0 +1,16 @@
+import json
+import boto3
+import time
+from boto3 import client as boto3_client
+
+lamba_client=boto3_client('lambda')
+def lambda_handler(event, context):
+    dynamodb = boto3.resource('dynamodb')
+
+    table = dynamodb.Table('ask1lab1table')
+
+    response = table.scan()
+    data = response['Items']
+    print(data)
+    for msg in data:
+        invoke_response=lamba_client.invoke(FunctionName="lab1ask2_1",InvocationType='Event',Payload=json.dumps({"ID":msg["ID"]}))

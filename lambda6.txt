@@ -1,0 +1,25 @@
+import json
+import boto3
+
+def lambda_handler(event, context):
+    # TODO implement
+    notification = "the results are different for the service with id "+event["ID"]
+    event["similarity"]="FAIL"
+    ex_result=json.dumps(event["Expected_Result"])
+    ac_result=json.dumps(event["data"])
+    if ex_result== ac_result: 
+        notification = "the results are similar for the service with id "+event["ID"]
+        event["similarity"]="SUCCESS"
+    #print(ex_result)
+    #print(ac_result)
+    
+    message={
+        'default':json.dumps(event),
+        'email':notification
+    }
+    client = boto3.client('sns')
+    response = client.publish(
+        TargetArn="arn:aws:sns:us-east-1:509253501177:ask2lab1sns",
+        Message=json.dumps(message),
+        MessageStructure="json"
+    )

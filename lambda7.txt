@@ -1,0 +1,33 @@
+import json
+import boto3
+
+
+def lambda_handler(event,context):
+    body = json.loads(event["Records"][0]["Sns"]["Message"])
+    
+    print(body)
+    client = boto3.client('dynamodb')
+
+    client.put_item(
+        TableName="ask2lab1_storage",
+        Item= {
+            "ID": {
+                "S":  body["ID"]
+            },
+            "method":{
+                "S": body["method"]
+            },
+            "URL":{
+                "S":body["URL"]
+            },
+            "Expected_Result":{
+                "S":body["Expected_Result"]
+            },
+            "data":{
+                "S":body["data"]
+            },
+            "similarity":{
+                "S":body["similarity"]
+            }
+       }
+    )
